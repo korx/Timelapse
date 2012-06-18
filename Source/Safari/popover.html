@@ -1,0 +1,137 @@
+<!doctype html>
+<!--
+
+© 2012 Korx Limited
+
+license: 
+  - MIT-style
+
+authors: 
+  - Michael Bird <michael.bird@korx.com>
+
+-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Timelapse</title>
+        <script>
+
+            safari.application.addEventListener("popover", function() {
+
+                var r = safari.extension.settings.rate;
+                var pos = null;
+                var left = null;
+                var offset = -5;
+                var rate = document.getElementById('rate');
+                var button = document.getElementById('button');
+
+                rate.firstChild.data = r + '%';
+                rate.addEventListener('click', function(e){
+                    button.style.left = (100 + offset) + 'px';
+                    rate.firstChild.data = 100 + '%';
+                    safari.extension.settings.rate = 100;
+                }, false);
+
+                button.style.left = (r + offset) + 'px';
+                button.addEventListener('mousedown', function(e){
+                    pos = e.pageX;
+                    left = parseInt(button.style.left);
+                }, false);
+
+                window.addEventListener('mousemove', function(e){
+                    if (pos != null) {
+                        var d = ((left + (e.pageX - pos)) - offset);
+                        if (d >= 0 && d <= 200) {
+                            r = d;
+                            button.style.left = (r + offset) + 'px';
+                            rate.firstChild.data = r + '%';
+                        }
+                    }
+                }, false);
+
+                window.addEventListener('mouseup', function(){
+                    pos = null;
+                    safari.extension.settings.rate = r;
+                }, false);
+
+            }, true);
+
+        </script>
+        <style>
+            body {
+                font-family: Arial;
+                font-size: 10px;
+                -webkit-user-select: none;
+            }
+            #rate {
+                position: absolute;
+                top: 8px;
+                left: 236px;
+                width: 34px;
+                height: 16px;
+                padding: 5px;
+                border: 0;
+                background: #888888;
+                color: #ffffff;
+                border-radius: 5px;
+                font-size: 12px;
+                line-height: 16px;
+                cursor: pointer;
+            }
+            #rate:focus {
+                outline: none;
+            }
+            #slider, #markers {
+                position: absolute;
+                left: 10px;
+                width: 200px;
+            }
+            #slider {
+                top: 10px;
+                height: 5px;
+                border-radius: 5px;
+                background: -webkit-linear-gradient(#555555 0%, #dddddd 100%);
+            }
+            #button {
+                position: absolute;
+                top: -4px;
+                left: 0px;
+                width: 10px;
+                height: 10px;
+                border: 1px solid #888888;
+                border-radius: 15px;
+                background: -webkit-linear-gradient(#ffffff 0%, #dddddd 100%);
+                box-shadow: 0px 0px 1px #dddddd;
+            }
+            #markers {
+                top: 22px;
+            }
+            #zero {
+                position: absolute;
+                top: 0px;
+                left: -5px;
+            }
+            #one {
+                position: absolute;
+                top: 0px;
+                left: 90px;
+            }
+            #two {
+                position: absolute;
+                top: 0px;
+                left: 189px;
+            }
+        </style>
+    </head>
+    <body>
+        <div id="rate">r</div>
+        <div id="slider">
+            <div id="button"></div>
+        </div>
+        <div id="markers">
+            <div id="zero">0%</div>
+            <div id="one">100%</div>
+            <div id="two">200%</div>
+        </div>
+    </body>
+</html>

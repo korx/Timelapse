@@ -1,4 +1,3 @@
-Timelapse
-=========
+# Timelapse
 
-Timelapse allows you to slow down and speed up CSS animations and transitions
+Timelapse is a web browser extension which allows you to slow down and speed up CSS animations and transitions.

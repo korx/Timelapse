@@ -1,0 +1,39 @@
+<!doctype html>
+<!--
+
+© 2012 Korx Limited
+
+license: 
+  - MIT-style
+
+authors: 
+  - Michael Bird <michael.bird@korx.com>
+
+-->
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Timelapse</title>
+        <script>
+
+            safari.application.addEventListener('message', function(e){
+                if (e.name == 'rate') {
+                    e.target.page.dispatchMessage('rate', safari.extension.settings.rate);
+                }
+            }, false);
+
+            safari.extension.settings.addEventListener('change', function(e) {
+                if (e.key == 'rate') {
+                    safari.application.activeBrowserWindow.activeTab.page.dispatchMessage('rate', safari.extension.settings.rate);
+                }
+            }, false);
+            
+            safari.application.addEventListener('activate', function(e){
+                safari.application.activeBrowserWindow.activeTab.page.dispatchMessage('rate', safari.extension.settings.rate);
+            }, true);
+
+        </script>
+    </head>
+    <body>
+    </body>
+</html>
