@@ -16,18 +16,22 @@ authors:
         <title>Timelapse</title>
         <script>
 
+            // respond to messages
             safari.application.addEventListener('message', function(e){
                 if (e.name == 'rate') {
+                    // if asking for the rate, send the current setting value
                     e.target.page.dispatchMessage('rate', safari.extension.settings.rate);
                 }
             }, false);
 
+            // detect if the rate setting has been updated, and let the active page know
             safari.extension.settings.addEventListener('change', function(e) {
                 if (e.key == 'rate') {
                     safari.application.activeBrowserWindow.activeTab.page.dispatchMessage('rate', safari.extension.settings.rate);
                 }
             }, false);
-            
+
+            // if a new page becomes active, send it the rate
             safari.application.addEventListener('activate', function(e){
                 safari.application.activeBrowserWindow.activeTab.page.dispatchMessage('rate', safari.extension.settings.rate);
             }, true);

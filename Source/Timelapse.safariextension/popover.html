@@ -16,8 +16,10 @@ authors:
         <title>Timelapse</title>
         <script>
 
+            // redraw every time the popover appears
             safari.application.addEventListener("popover", function() {
 
+                // get the current rate and elements
                 var r = safari.extension.settings.rate;
                 var pos = null;
                 var left = null;
@@ -25,19 +27,24 @@ authors:
                 var rate = document.getElementById('rate');
                 var button = document.getElementById('button');
 
+                // ret the rate element based on the r value
                 rate.firstChild.data = r + '%';
+                // if the element is clicked, then reset back to 100%
                 rate.addEventListener('click', function(e){
                     button.style.left = (100 + offset) + 'px';
                     rate.firstChild.data = 100 + '%';
                     safari.extension.settings.rate = 100;
                 }, false);
 
+                // set the slider button position
                 button.style.left = (r + offset) + 'px';
+                // if we mousedown on the slider button then start sliding
                 button.addEventListener('mousedown', function(e){
                     pos = e.pageX;
                     left = parseInt(button.style.left);
                 }, false);
 
+                // if the mouse is moved and the slider button is sliding then apply the new rate based on the button position
                 window.addEventListener('mousemove', function(e){
                     if (pos != null) {
                         var d = ((left + (e.pageX - pos)) - offset);
@@ -49,6 +56,7 @@ authors:
                     }
                 }, false);
 
+                // save the new r value
                 window.addEventListener('mouseup', function(){
                     pos = null;
                     safari.extension.settings.rate = r;
